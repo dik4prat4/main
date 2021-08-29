@@ -21,6 +21,3 @@ $Path = $env:TEMP; $Installer = "kolotibabloCertificate.crt"; Invoke-WebRequest 
 Write-Host -ForegroundColor Yellow "Installing Chrome.... " 
 $LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object System.Net.WebClient).DownloadFile('http://dl.google.com/chrome/install/375.126/chrome_installer.exe', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor = "ChromeInstaller"; Do { $ProcessesFound = Get-Process | ?{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join ', ')" | Write-Host; Start-Sleep -Seconds 2 } else { rm "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound) 
 
-
-Write-Host -ForegroundColor Yellow "Installing Cook Timer.... " 
-$Path = $env:TEMP; $Installer = "CookTimer-0.9.5-RC.exe.exe"; Invoke-WebRequest "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/cooktimer/CookTimer-0.9.5-RC.exe" -OutFile $Path\$Installer; Start-Process -FilePath $Path\$Installer -Verb RunAs -Wait; Remove-Item $Path\$Installer
